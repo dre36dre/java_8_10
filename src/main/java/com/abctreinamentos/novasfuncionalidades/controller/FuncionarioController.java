@@ -23,7 +23,8 @@ public class FuncionarioController {
 		String response = """
 				<html>
 					<body>
-						<a href="/listarFuncionarios">Listar Funcionários da VIVO</a>
+						<a href="/listarFuncionarios">1. Listar Funcionários</a>
+						<a href="/listarCidadesFuncionarios">2. Listar cidades Funcionários</a>
 					</body>
 				</html>
 				""";
@@ -38,4 +39,16 @@ public class FuncionarioController {
 		List<Funcionario> funcionarios = funcionarioService.listAll();
 		return new ResponseEntity<List<Funcionario>>(funcionarios,HttpStatus.OK);	
 	}
+
+	//Listar cidades
+	@GetMapping("/listarCidadesFuncionarios")
+	public ResponseEntity<List<String>> listarCidadesFuncionarios()
+	{
+		List<Funcionario> funcionarios = funcionarioService.listAll();
+		List<String> cidades=funcionarios.stream().map(Funcionario::getCidade).toList();
+		return new ResponseEntity<List<String>>(cidades,HttpStatus.OK);	
+	} 
+	//Lista soma de salarios
+
+
 }
