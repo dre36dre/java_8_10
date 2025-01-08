@@ -25,6 +25,7 @@ public class FuncionarioController {
 					<body>
 						<a href="/listarFuncionarios">1. Listar Funcionários</a>
 						<a href="/listarCidadesFuncionarios">2. Listar cidades Funcionários</a>
+						<a href="/calcularFolhaFuncionarios">3. Calcular folha de Funcionários</a>
 					</body>
 				</html>
 				""";
@@ -48,7 +49,22 @@ public class FuncionarioController {
 		List<String> cidades=funcionarios.stream().map(Funcionario::getCidade).toList();
 		return new ResponseEntity<List<String>>(cidades,HttpStatus.OK);	
 	} 
-	//Lista soma de salarios
+	//Calcular folha dos funcionarios
+	@GetMapping("/calcularFolhaFuncionarios")
+	public  ResponseEntity<String> calcularFolhaFuncionarios()
+	{
+		List<Funcionario> funcionarios=funcionarioService.listAll();
+		double somaSalarios=funcionarios.stream().mapToDouble(Funcionario::getSalario).sum();
+
+		//java 13 -> Text Blocks
+		String resposta="""
+				{
+				"Total da folha de pagamentos": %.2
+				}
+				""".formatted(somaSalarios);
+				return new ResponseEntity<String>(resposta,HttpStatus.OK);
+				
+	}
 
 
 }
