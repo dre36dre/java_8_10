@@ -26,6 +26,8 @@ public class FuncionarioController {
 						<a href="/listarFuncionarios">1. Listar Funcionários</a>
 						<a href="/listarCidadesFuncionarios">2. Listar cidades Funcionários</a>
 						<a href="/calcularFolhaFuncionarios">3. Calcular folha de Funcionários</a>
+						<a href="/listarFuncioanariosIdadeMenor30">3. Funcionarios com idade menor de 30 anos</a>
+						<a href="/listarFuncioanariosIdadeMaiorIgual30">4. Funcionarios com idade maior ou igual a  30 anos</a>
 					</body>
 				</html>
 				""";
@@ -66,5 +68,44 @@ public class FuncionarioController {
 				
 	}
 
+	//Funcionarios com idade menor  que 30 anos
+	@GetMapping("/listarFuncioanariosIdadeMenor30")
+	public  ResponseEntity<String> listarFuncioanariosIdadeMenor30()
+	{
+		List<Funcionario> funcionarios=funcionarioService.listAll();
+		long totalFuncionarios =funcionarios.stream().filter(f -> f.getIdade() < 30).count();
+		double somaSalarios= funcionarios.stream()
+		.filter(f -> f.getIdade() < 30).mapToDouble(Funcionario::getSalario).sum();
+		double mediaSalarios= somaSalarios/totalFuncionarios;
+
+		//java 13 -> Text Blocks
+		String resposta="""
+				{
+				"Total de funcionários >= a  30 anos": %d, "Média salarial": %.2f
+				}
+				""".formatted(totalFuncionarios,mediaSalarios);
+				return new ResponseEntity<String>(resposta,HttpStatus.OK);
+				
+	}
+
+	//Funcionarios com idade maior ou igual  que 30 anos
+	@GetMapping("/listarFuncioanariosIdadeMaiorIgual30")
+	public  ResponseEntity<String> listarFuncioanariosIdadeMaiorIgual30()
+	{
+		List<Funcionario> funcionarios=funcionarioService.listAll();
+		long totalFuncionarios =funcionarios.stream().filter(f -> f.getIdade() >= 30).count();
+		double somaSalarios= funcionarios.stream()
+		.filter(f -> f.getIdade() >= 30).mapToDouble(Funcionario::getSalario).sum();
+		double mediaSalarios= somaSalarios/totalFuncionarios;
+
+		//java 13 -> Text Blocks
+		String resposta="""
+				{
+				"Total de funcionários >= a  30 anos": %d, "Média salarial": %.2f
+				}
+				""".formatted(totalFuncionarios,mediaSalarios);
+				return new ResponseEntity<String>(resposta,HttpStatus.OK);
+				
+	}
 
 }
