@@ -1,6 +1,8 @@
 package com.abctreinamentos.novasfuncionalidades.controller;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +28,14 @@ public class FuncionarioController {
 						<a href="/listarFuncionarios">1. Listar Funcionários</a>
 						<a href="/listarCidadesFuncionarios">2. Listar cidades Funcionários</a>
 						<a href="/calcularFolhaFuncionarios">3. Calcular folha de Funcionários</a>
-						<a href="/listarFuncioanariosIdadeMenor30">3. Funcionarios com idade menor de 30 anos</a>
-						<a href="/listarFuncioanariosIdadeMaiorIgual30">4. Funcionarios com idade maior ou igual a  30 anos</a>
+						<a href="/listarFuncioanariosIdadeMenor30">4. Funcionarios com idade menor de 30 anos</a>
+						<a href="/listarFuncioanariosIdadeMaiorIgual30">5. Funcionarios com idade maior ou igual a  30 anos</a>
+						<a href="/listarFuncionarioSalarioOrdenado">6. Listar  salario ordenado</a>
+						<a href="/listarFuncionarioMenorSalario">7. Listar funcionario com menor salario</a>
+						<a href="/listarFuncionarioMaisAntigo">8. Listar funcionario mais antigo</a>
+						
+						
+						
 					</body>
 				</html>
 				""";
@@ -107,5 +115,61 @@ public class FuncionarioController {
 				return new ResponseEntity<String>(resposta,HttpStatus.OK);
 				
 	}
+	@GetMapping("/listarFuncionarioMaiorSalario")
+	public ResponseEntity<Optional<Funcionario>> listarFuncionarioMaiorSalario()
+	{
+		List<Funcionario> funcionarios = funcionarioService.listAll();
+		Optional<Funcionario> funcionario =funcionarios.stream()
+		.reduce((f1,f2) ->f1.getSalario() >f2.getSalario() ? f1:f2);  //condição ternario
+		return new ResponseEntity<Optional<Funcionario>>(funcionario,HttpStatus.OK);	
+	} 
+	@GetMapping("/listarFuncionarioMenorSalario")
+	public ResponseEntity<Optional<Funcionario>> listarFuncionarioMenorSalario()
+	{
+		List<Funcionario> funcionarios = funcionarioService.listAll();
+		Optional<Funcionario> funcionario =funcionarios.stream()
+		.reduce((f1,f2) ->f1.getSalario() < f2.getSalario() ? f1:f2);  //condição ternario
+		return new ResponseEntity<Optional<Funcionario>>(funcionario,HttpStatus.OK);	
+	} 
 
+	//Salario ordenado
+	@GetMapping("/listarFuncionarioSalarioOrdenado")
+	public ResponseEntity<List<Funcionario>> listarFuncionarioSalarioOrdenado()
+	{
+		List<Funcionario> funcionario =funcionarioService.listAll().stream()
+		.sorted((f1,f2) -> Double.compare(f1.getSalario(), f2.getSalario())).toList();
+
+		return new ResponseEntity<List<Funcionario>>(funcionario,HttpStatus.OK);	
+	} 
+
+	//Funcionario mais antigo
+	@GetMapping("/listarFuncionarioMaisAntigo")
+	public ResponseEntity<String> listarFuncionarioMaisAntigo()
+	{
+		List<Funcionario> funcionarios = funcionarioService.listAll();
+
+		Optional<Funcionario> funcionario =funcionarios.stream()
+		.reduce((f1,f2) ->f1.getIdade() < f2.getIdade() ? f1:f2);  //condição ternario
+		
+		int maiorIdade=0;
+		String nome="";
+
+		if(funcionario.isPresent())
+		{
+			maiorIdade=funcionario.get().getIdade();
+			nome=funcionario.get().getNome();
+		}
+
+		LocalDate dataHoje=LocalDate.now();
+		int anoNascimento= dataHoje.getYear() - maiorIdade;
+		String resposta="""
+			{
+			"Nome do funcionario mais antigo": %s,
+			"Ano de nascimento": %d
+			}
+			""".formatted(nome,anoNascimento);
+
+			return new ResponseEntity<String>(resposta,HttpStatus.OK);
 }
+}
+
