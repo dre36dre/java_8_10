@@ -1,7 +1,9 @@
 package com.abctreinamentos.novasfuncionalidades.controller;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ public class FuncionarioController {
 						<a href="/listarFuncionarioSalarioOrdenado">6. Listar  salario ordenado</a>
 						<a href="/listarFuncionarioMenorSalario">7. Listar funcionario com menor salario</a>
 						<a href="/listarFuncionarioMaisAntigo">8. Listar funcionario mais antigo</a>
+						<a href="/listarFuncionarioSalarioOrdenadoSimplicficado">6. Listar  simplificado</a>
 						
 						
 						
@@ -171,5 +174,21 @@ public class FuncionarioController {
 
 			return new ResponseEntity<String>(resposta,HttpStatus.OK);
 }
+
+//Salario ordenado simplificado
+@GetMapping("/listarFuncionarioSalarioOrdenadoSimplificado")
+public ResponseEntity<Map<?,?>> listarFuncionarioSalarioOrdenadoSimplificado()
+{
+	List<Funcionario> funcionarios =funcionarioService.listAll().stream()
+	.sorted((f1,f2) -> Double.compare(f1.getSalario(), f2.getSalario())).toList();
+	
+	var nomeSalarioMap= new LinkedHashMap<>();
+
+	funcionarios.forEach(funcionario -> nomeSalarioMap.put(funcionario.getNome(),funcionario.getSalario()));
+
+	return new ResponseEntity<>(nomeSalarioMap,HttpStatus.OK);	
+} 
+
+
 }
 
