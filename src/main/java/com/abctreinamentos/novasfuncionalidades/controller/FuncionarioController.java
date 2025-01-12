@@ -41,10 +41,8 @@ public class FuncionarioController {
 						<a href="/listarFuncionarioMaisAntigo">8. Listar funcionario mais antigo</a>
 						<a href="/listarFuncionarioSalarioOrdenadoSimplicficado">9. Listar  simplificado</a>
 						<a href="/inserirNovoFuncionarioJSON">10. Inserir Novo Funcionario JSON</a>
-						
-						
-						
-					</body>
+						<a href="/listaratividadesFuncionarios">11. Listar atividades dos funcionarios</a>
+						</body>
 				</html>
 				""";
 		
@@ -196,7 +194,7 @@ public ResponseEntity<Map<?,?>> listarFuncionarioSalarioOrdenadoSimplificado()
 @GetMapping("/inserirNovoFuncionarioJSON")
 public ResponseEntity<String> inserirNovoFuncionario()
 {
-	var funcionarios= funcionarioService.listAll();
+	//var funcionarios= funcionarioService.listAll();
 	String resposta="";
 	try{
 		String novoFuncionario ="""
@@ -226,6 +224,33 @@ public ResponseEntity<String> inserirNovoFuncionario()
 
 	return new ResponseEntity<String>(resposta,HttpStatus.OK);
 }
+
+//Listar atividades
+@GetMapping("/listarAtividadeFuncionario")
+public ResponseEntity<Map<?,?>> listarAtividadeFuncionario()
+{
+	List<Funcionario> funcionarios =funcionarioService.listAll();
+	
+	var nomeAtividadeMap= new LinkedHashMap<>();
+
+	funcionarios.forEach(funcionario -> {
+		String atividade =switch(funcionario.getDepartamento())
+		{
+			case "Markenting " -> "Atividade principal ==> Realizar divulgação";
+			case "Vendas" -> "Atividade principal ==> Realizar vendas";
+			case "Tecnologia da informação" -> "Atividade principal ==> Manter o parque funcionando";
+			case "Finanças" -> "Atividade principal ==> Administrar o fluxo de caixa";
+			case "Design" -> "Atividade principal ==> Responsável pelo Design dos produtos";
+			case "Recurso humanos" -> "Atividade principal ==> Folha de pagamento";
+			case "Projetos" -> "Atividade principal ==> Criar projetos";
+
+			default -> "Ação não definida";
+		};
+		nomeAtividadeMap.put(funcionario.getNome(), atividade);
+	});
+
+	return new ResponseEntity<>(nomeAtividadeMap,HttpStatus.OK);	
+} 
 
 
 }
