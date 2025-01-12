@@ -1,5 +1,9 @@
 package com.abctreinamentos.novasfuncionalidades.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +39,8 @@ public class FuncionarioController {
 						<a href="/listarFuncionarioSalarioOrdenado">6. Listar  salario ordenado</a>
 						<a href="/listarFuncionarioMenorSalario">7. Listar funcionario com menor salario</a>
 						<a href="/listarFuncionarioMaisAntigo">8. Listar funcionario mais antigo</a>
-						<a href="/listarFuncionarioSalarioOrdenadoSimplicficado">6. Listar  simplificado</a>
+						<a href="/listarFuncionarioSalarioOrdenadoSimplicficado">9. Listar  simplificado</a>
+						<a href="/inserirNovoFuncionarioJSON">10. Inserir Novo Funcionario JSON</a>
 						
 						
 						
@@ -188,6 +193,39 @@ public ResponseEntity<Map<?,?>> listarFuncionarioSalarioOrdenadoSimplificado()
 
 	return new ResponseEntity<>(nomeSalarioMap,HttpStatus.OK);	
 } 
+@GetMapping("/inserirNovoFuncionarioJSON")
+public ResponseEntity<String> inserirNovoFuncionario()
+{
+	var funcionarios= funcionarioService.listAll();
+	String resposta="";
+	try{
+		String novoFuncionario ="""
+				 {
+    "nome": "Anderson ",
+    "idade": 45,
+    "cargo": "Desenvolvedor de sistemas",
+    "departamento": "Projetos",
+    "salario": 100000.00,
+    "endereco": {
+      "rua": "Avenida dos Projetos",
+      "numero": 1234,
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "cep": "87654-321"
+    }
+				""";
+				Files.writeString(Path.of("/workspaces/java_8_10/src/main/resources/data/funcionarios.json"),
+				novoFuncionario,StandardOpenOption.APPEND);
+
+				resposta=Files.readString(Path.of
+		("/workspaces/java_8_10/src/main/resources/data/funcionarios.json"));
+
+	}catch(IOException e){
+		e.printStackTrace();
+	}
+
+	return new ResponseEntity<String>(resposta,HttpStatus.OK);
+}
 
 
 }
