@@ -2,25 +2,57 @@ package Java8_10;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class Java8 {
 public static void main(String[] args) {
-	quantidadeElementos();
+idade();
 	
 }
+//Api Date Time
+public static void idade(){
+	LocalDate hoje=LocalDate.now();
+
+	System.out.println(hoje);
+
+	LocalDate aniversario=LocalDate.of(1979,Month.FEBRUARY,28);
+	DateTimeFormatter formatter= DateTimeFormatter.ofPattern("dd 'de'  MMMM 'de' yyyy");
+
+	String dataFormatada= aniversario.format(formatter);
+
+	System.out.println("Aniversário: "+dataFormatada);
+
+	int idade=aniversario.until(hoje).getYears();
+
+	System.out.println("Idade: "+idade);
+}
+
+
+
+//Método sum()
+public static void soma(){
+	IntStream numbers=IntStream.of(1,2,3,5);
+	 int sum=numbers.sum();
+	System.out.println("Soma: "+sum);
+}
+
 //Método count() 
 public static void quantidadeElementos(){
-	List<Integer> letras=Arrays.asList(5,6,3,7,8);
-	long  letra=letras.stream().count();
+	List<Integer> numeros=Arrays.asList(5,6,3,7,8);
+	long  numero=numeros.stream().count();
 
-	System.out.println(letra);
+	System.out.println("Quantidade: "+numero);
 }
 
 
