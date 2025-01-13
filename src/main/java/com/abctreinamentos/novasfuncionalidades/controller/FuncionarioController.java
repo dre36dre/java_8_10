@@ -49,7 +49,7 @@ public class FuncionarioController {
 		return new ResponseEntity<String>(response,HttpStatus.OK);	
 	}
 	
-	
+	//Método listar funcionários
 	@GetMapping("/listarFuncionarios")
 	public ResponseEntity<List<Funcionario>> listarFuncionarios()
 	{

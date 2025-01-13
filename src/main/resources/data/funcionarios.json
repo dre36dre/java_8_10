@@ -142,33 +142,3 @@
 ]
 
 
- 
-
- 
-
- {
-"nome": "Anderson ",
-"idade": 45,
-"cargo": "Desenvolvedor de sistemas",
-"departamento": "Projetos",
-"salario": 5700.00,
-"endereco": {
-  "rua": "Avenida dos Projetos",
-  "numero": 123,
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "cep": "87654-321"
-}
- {
-"nome": "Anderson ",
-"idade": 45,
-"cargo": "Desenvolvedor de sistemas",
-"departamento": "Projetos",
-"salario": 100000.00,
-"endereco": {
-  "rua": "Avenida dos Projetos",
-  "numero": 1234,
-  "cidade": "São Paulo",
-  "estado": "SP",
-  "cep": "87654-321"
-}
