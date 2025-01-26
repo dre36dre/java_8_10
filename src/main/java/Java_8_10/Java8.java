@@ -1,4 +1,4 @@
-package Java8_10;
+package Java_8_10;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 
 public class Java8 {
-public static void main(String[] args) {
+ void main(String[] args) {
 idade();
 	
 }

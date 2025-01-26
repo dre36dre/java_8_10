@@ -252,6 +252,32 @@ public ResponseEntity<Map<?,?>> listarAtividadeFuncionario()
 	return new ResponseEntity<>(nomeAtividadeMap,HttpStatus.OK);	
 } 
 
+//Listar atividades Detalhadamento
+@GetMapping("/listarAtividadeFuncionarioDetalhamente")
+public ResponseEntity<Map<?,?>> listarAtividadeFuncionarioDetalhadamente()
+{
+	List<Funcionario> funcionarios =funcionarioService.listAll();
+	
+	var nomeAtividadeMap= new LinkedHashMap<>();
+
+	funcionarios.forEach(funcionario -> {
+		String atividade =switch(funcionario.getDepartamento())
+		{
+			case "Markenting " -> "Atividade principal ==> Realizar divulgação";
+			case "Vendas" -> "Atividade principal ==> Realizar vendas";
+			case "Tecnologia da informação" -> "Atividade principal ==> Manter o parque funcionando";
+			case "Finanças" -> "Atividade principal ==> Administrar o fluxo de caixa";
+			case "Design" -> "Atividade principal ==> Responsável pelo Design dos produtos";
+			case "Recurso humanos" -> "Atividade principal ==> Folha de pagamento";
+			case "Projetos" -> "Atividade principal ==> Criar projetos";
+
+			default -> "Ação não definida";
+		};
+		nomeAtividadeMap.put(funcionario.getNome(), atividade);
+	});
+
+	return new ResponseEntity<>(nomeAtividadeMap,HttpStatus.OK);	
+} 
 
 }
 
