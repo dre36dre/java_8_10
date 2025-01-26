@@ -1,5 +1,5 @@
 public class App {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hi, World!");
+    void main() {
+        System.out.println("Using only void main() in the main class, Using only void main() in main class in Java 21");
     }
 }
